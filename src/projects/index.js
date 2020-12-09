@@ -14,6 +14,41 @@ const getFile = () => {
   return JSON.parse(fileString); //TURNS JSON STRING INTO JSON ARRAY WE CAN CODE WITH, AND RETURNS IT FROM THE FUNCTION
 };
 
+router.get("/", (req, res, next) => {
+  try {
+    const projectDataBase = getFile(); //RUNS FUNCTION TO GET DATABASE
+    if (projectDataBase.length > 0) {
+      res.status(201).send(projectDataBase); //SENDS RESPONSE WITH GOOD CODE AND WHOLE DATABSE
+    } else {
+      const err = {};
+      err.httpStatusCode = 404;
+      next(err);
+    }
+  } catch (err) {
+    err.httpStatusCode = 404;
+    next(err);
+  }
+});
+
+router.get("/:id", (req, res, next) => {
+  try {
+    const projectDataBase = getFile(); //RUNS FUNCTION TO GET DATABASE
+    const singleProject = projectDataBase.filter(
+      (project) => project.ID === req.params.id
+    );
+    if (singleProject.length > 0) {
+      res.status(201).send(singleProject); //SENDS RESPONSE WITH GOOD CODE AND WHOLE DATABSE
+    } else {
+      const err = {};
+      err.httpStatusCode = 404;
+      next(err);
+    }
+  } catch (err) {
+    err.httpStatusCode = 404;
+    next(err);
+  }
+});
+
 router.post(
   "/",
   [
@@ -53,5 +88,28 @@ router.post(
     }
   }
 );
+
+router.delete("/:id", (req, res, next) => {
+  try {
+    const projectDataBase = getFile(); //RUNS FUNCTION TO GET DATABASE
+    const singleProject = projectDataBase.filter(
+      (project) => project.ID === req.params.id
+    );
+    if (singleProject.length > 0) {
+      const filteredDB = projectDataBase.filter(
+        (project) => project.ID !== req.params.id
+      );
+      fs.writeFileSync(projectFilePath, JSON.stringify(filteredDB));
+      res.status(201).send(filteredDB); //SENDS RESPONSE WITH GOOD CODE AND WHOLE DATABSE
+    } else {
+      const err = {};
+      err.httpStatusCode = 404;
+      next(err);
+    }
+  } catch (err) {
+    err.httpStatusCode = 404;
+    next(err);
+  }
+});
 
 module.exports = router;
