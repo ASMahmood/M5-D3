@@ -1,11 +1,11 @@
 {
   "name": "M5-D3",
-  "version": "1.0.0",
+  "version": "4.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -r dotenv/config ./src/server.js"
+    "dev": "nodemon ./src/server.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-validator": "^6.8.0"
+    "express-validator": "^6.8.0",
+    "uniqid": "^5.2.0"
   }
 }
