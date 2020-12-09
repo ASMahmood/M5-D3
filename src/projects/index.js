@@ -89,6 +89,38 @@ router.post(
   }
 );
 
+router.put("/:id", (req, res, next) => {
+  try {
+    const projectDataBase = getFile(); //RUNS FUNCTION TO GET DATABASE
+    const singleProject = projectDataBase.filter(
+      (project) => project.ID === req.params.id
+    );
+    if (singleProject.length > 0) {
+      const filteredDB = projectDataBase.filter(
+        (project) => project.ID !== req.params.id
+      );
+      console.log(singleProject);
+      const editedProject = {
+        ...req.body,
+        ID: singleProject[0].ID,
+        StudentID: singleProject[0].StudentID,
+        CreationDate: singleProject[0].CreationDate,
+        ModifiedDate: new Date(),
+      };
+      filteredDB.push(editedProject);
+      fs.writeFileSync(projectFilePath, JSON.stringify(filteredDB));
+      res.status(201).send(filteredDB); //SENDS RESPONSE WITH GOOD CODE AND WHOLE DATABSE
+    } else {
+      const err = {};
+      err.httpStatusCode = 404;
+      next(err);
+    }
+  } catch (err) {
+    err.httpStatusCode = 404;
+    next(err);
+  }
+});
+
 router.delete("/:id", (req, res, next) => {
   try {
     const projectDataBase = getFile(); //RUNS FUNCTION TO GET DATABASE

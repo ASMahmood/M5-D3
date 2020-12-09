@@ -30,7 +30,6 @@ const catchAllHandler = (err, req, res, next) => {
   if (!res.headersSent) {
     res.status(500).send("We don't know whats gone wrong");
   }
-  next(err);
 };
 
 module.exports = {
