@@ -19,6 +19,13 @@ const forbiddenHandler = (err, req, res, next) => {
   next(err);
 };
 
+const badRequestHandler = (err, req, res, next) => {
+  if (err.httpStatusCode === 400) {
+    res.status(400).send(err.message);
+  }
+  next(err);
+};
+
 const catchAllHandler = (err, req, res, next) => {
   if (!res.headersSent) {
     res.status(500).send("We don't know whats gone wrong");
@@ -30,5 +37,6 @@ module.exports = {
   notFoundHandler,
   unauthorizedHandler,
   forbiddenHandler,
+  badRequestHandler,
   catchAllHandler,
 };

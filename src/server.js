@@ -4,6 +4,7 @@ const {
   notFoundHandler,
   unauthorizedHandler,
   forbiddenHandler,
+  badRequestHandler,
   catchAllHandler,
 } = require("./errorHandling");
 
@@ -16,6 +17,7 @@ server.use("/projects", projectRoutes);
 server.use(notFoundHandler);
 server.use(unauthorizedHandler);
 server.use(forbiddenHandler);
+server.use(badRequestHandler);
 server.use(catchAllHandler);
 
 server.listen(port, () => {
